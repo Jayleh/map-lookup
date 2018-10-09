@@ -6,4 +6,9 @@ from django.shortcuts import render
 
 def index(request):
     # return HttpResponse('HELLO FROM POSTS')
-    return render(request, 'posts/index.html', {'title': 'Latest Posts'})
+
+    context = {
+        'title': 'Latest Posts'
+    }
+
+    return render(request, 'posts/index.html', context)

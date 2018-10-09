@@ -1,4 +1,8 @@
 {% extends 'posts/layout.html' %}
+{% block styles %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'posts/css/styles.css' %}">
+{% endblock styles %}
 {% block content %}
 <div class="container">
   <h3 class="center-align red lighten-3">{{ title }}</h3>
