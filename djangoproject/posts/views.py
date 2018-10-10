@@ -1,14 +1,20 @@
-from django.shortcuts import render
-# from django.http import HttpResponse
-
+from django.shortcuts import render, redirect
+from .forms import ResellerForm
 # Create your views here.
 
 
-def index(request):
-    # return HttpResponse('HELLO FROM POSTS')
+def home(request):
+    form = ResellerForm(request.POST or None)
 
     context = {
-        'title': 'Latest Posts'
+        "title": "Latest Posts",
+        "form": form,
+        "field_names": {'first_name', 'last_name', 'state', 'country'}
     }
 
-    return render(request, 'posts/index.html', context)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+
+    return render(request, "posts/index.html", context)

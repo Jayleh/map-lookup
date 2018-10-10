@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Django Project</title>
+    <title>Wholesale Map</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'posts/img/favicon.ico' %}">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
@@ -16,14 +18,21 @@
 
   <body>
     <header class="container center-align">
-      <h1>Django Project</h1>
+      <h1>Test Form</h1>
     </header>
 
     <main>
-      {% block content %}
-      {% endblock content %}
-      <a style="display: block;" href="/admin" class="center-align">Admin Login</a>
+      {% block main %}
+      {% endblock main %}
+      <div class="container center-align">
+        <div class="row">
+          <a href="/admin">Admin Login</a>
+        </div>
+      </div>
     </main>
+
+    {% block scripts %}
+    {% endblock scripts %}
   </body>
 
 </html>
