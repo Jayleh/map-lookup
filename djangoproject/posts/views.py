@@ -4,12 +4,20 @@ from .forms import ResellerForm
 
 
 def home(request):
+    context = {
+        "title": "Latest Posts"
+    }
+
+    return render(request, "posts/index.html", context)
+
+
+def add_reseller(request):
     form = ResellerForm(request.POST or None)
 
     context = {
         "title": "Latest Posts",
         "form": form,
-        "field_names": {'first_name', 'last_name', 'state', 'country'}
+        "field_names": {'first_name', 'last_name', 'email', 'phone', 'city', 'zipcode', 'state', 'country'}
     }
 
     if request.method == "POST":
@@ -17,4 +25,4 @@ def home(request):
             form.save()
             return redirect("home")
 
-    return render(request, "posts/index.html", context)
+    return render(request, "posts/add-reseller.html", context)

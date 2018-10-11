@@ -8,6 +8,8 @@
     <title>Wholesale Map</title>
     {% load static %}
     <link rel="shortcut icon" href="{% static 'posts/img/favicon.ico' %}">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
@@ -17,18 +19,14 @@
   </head>
 
   <body>
-    <header class="container center-align">
-      <h1>Test Form</h1>
+    <header>
+      {% block header %}
+      {% endblock header %}
     </header>
 
     <main>
       {% block main %}
       {% endblock main %}
-      <div class="container center-align">
-        <div class="row">
-          <a href="/admin">Admin Login</a>
-        </div>
-      </div>
     </main>
 
     {% block scripts %}
