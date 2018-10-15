@@ -1,23 +1,26 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let $sidenav = document.querySelector('.sidenav'),
-        options = {
-            closeOnClick: false
-        }
-    // M.Sidenav.init($sidenav, options);
+    // Initialize collapsible
+    let $collapsible = document.querySelector('.collapsible');
+    M.Collapsible.init($collapsible);
 
-    let instance = M.Sidenav.getInstance($sidenav);
+    // Side panel
+    let sideNav = document.querySelector('.side-panel');
 
-    console.log(instance);
-
-    // Sidenav open and close buttons
-    let openSidenavBtn = document.querySelector('.open-sidenav'),
-        closeSidenavBtn = document.querySelector('.close-sidenav');
+    // Side panel open and close buttons
+    let openSidenavBtn = document.querySelector('.open-sidenav');
 
     openSidenavBtn.addEventListener('click', function () {
-        instance.open();
-    });
+        let sideNavClassList = sideNav.classList;
 
-    closeSidenavBtn.addEventListener('click', function () {
-        instance.close();
+        if (sideNavClassList.contains('close')) {
+            sideNav.style.transform = "translateX(0%)";
+            sideNavClassList.remove('close');
+            sideNavClassList.add('open');
+        }
+        else if (sideNavClassList.contains('open')) {
+            sideNav.style.transform = "translateX(-105%)";
+            sideNavClassList.remove('open');
+            sideNavClassList.add('close');
+        }
     });
 });

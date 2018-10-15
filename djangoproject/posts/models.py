@@ -1,30 +1,13 @@
-from datetime import datetime as dt
 from django.db import models
 from django.core.validators import RegexValidator, EmailValidator
+from localflavor.us.models import USStateField, USZipCodeField
 # Create your models here.
-
-
-class Posts(models.Model):
-    title = models.CharField(max_length=200)
-    body = models.TextField()
-    created_at = models.DateTimeField(default=dt.now(), blank=True)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        verbose_name_plural = "Posts"
 
 
 class Resellers(models.Model):
     phone_regex = RegexValidator(
         regex=r'^\d{10,15}$',
         message="Please enter phone number with only numbers (no dashes).")
-
-    zipcode_regex = RegexValidator(
-        regex=r'^\d{5}$',
-        message="Zipcode must be five digits."
-    )
 
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -33,9 +16,8 @@ class Resellers(models.Model):
     company = models.CharField(max_length=100, blank=True)
     address = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
-    zipcode = models.CharField(validators=[zipcode_regex], max_length=5)
-    state = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
+    state = USStateField()
+    zipcode = USZipCodeField()
     comments = models.TextField(max_length=600)
 
     def __str__(self):

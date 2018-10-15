@@ -4,16 +4,43 @@
 <link rel="stylesheet" href="{% static 'posts/css/styles.css' %}">
 {% endblock styles %}
 {% block main %}
-<div id="slide-out" class="card sidenav">
+<div class="card side-panel close">
   <div class="card-content">
-    <a class="close-sidenav" href="#!">Clicking this will close Sidenav</a>
-    <p>Reseller List</p>
+    <ul class="collapsible">
+      {% for reseller in resellers %}
+      <li>
+        <div class="collapsible-header">
+          <span><strong>{{ reseller.first_name }} {{ reseller.last_name }}</strong>
+            &nbsp;&nbsp;{{ reseller.city }}, {{ reseller.state }}</span>
+        </div>
+        <div class="collapsible-body">
+          <div class="reseller-info">
+            <i class="material-icons">home</i>
+            <div class="address">
+              <p>{{ reseller.address }}</p>
+              <p>{{ reseller.city }}, {{ reseller.state }}</p>
+            </div>
+          </div>
+          <div class="reseller-info">
+            <i class="material-icons">email</i>
+            <p>{{ reseller.email }}</p>
+          </div>
+          <div class="reseller-info">
+            <i class="material-icons">phone</i>
+            <p>{{ reseller.phone }}</p>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
   </div>
   <div class="card-action">
     <a href="/add-reseller" class="btn small waves-effect waves-light">Add New Reseller</a>
   </div>
 </div>
-<a href="#" data-target="slide-out" class="open-sidenav show-on-large"><i class="material-icons">graphic_eq</i></a>
+<div class="open-sidenav show-on-large">
+  <a class="btn-floating btn waves-effect waves-light red"><i class="material-icons">graphic_eq</i></a>
+</div>
 {% endblock main %}
 {% block scripts %}
 {% load static %}

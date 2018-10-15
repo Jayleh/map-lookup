@@ -3,3 +3,22 @@
     right: 4%;
     bottom: 5%;
 }
+
+.side-panel {
+    position: fixed;
+    height: 100%;
+    width: 300px;
+    margin: 0;
+    transform: translateX(-105%);
+    transition: transform 400ms;
+}
+
+.reseller-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.reseller-info i {
+    padding-right: 10px;
+}
