@@ -5,8 +5,6 @@ import requests
 def get_location(address, city, state, zipcode):
     GEOCODE_API_KEY = os.environ.get('GEOCODE_API_KEY')
 
-    print(GEOCODE_API_KEY)
-
     base_url = "https://maps.googleapis.com/maps/api/geocode/json?address"
 
     formatted_address = address.replace(" ", "+")

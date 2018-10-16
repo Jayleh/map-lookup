@@ -1,23 +1,21 @@
 from django import forms
-from localflavor.us.forms import USStateSelect, USZipCodeField
 from phonenumber_field.formfields import PhoneNumberField
 from .models import Resellers
 
 
 class ResellerForm(forms.ModelForm):
-    first_name = forms.CharField(label="First Name", max_length=100)
-    last_name = forms.CharField(label="Last Name", max_length=100)
-    email = forms.EmailField(label='E-mail')
-    phone = PhoneNumberField()
-    company = forms.CharField(max_length=100)
-    address = forms.CharField(max_length=100)
-    city = forms.CharField(max_length=100)
-    state = USStateSelect()
-    zipcode = USZipCodeField(label="ZIP/Postal Code")
-    comments = forms.CharField(widget=forms.Textarea(
-        attrs={"class": "materialize-textarea"}), max_length=600)
+    phone = PhoneNumberField(initial="+1")
 
     class Meta:
         model = Resellers
         fields = ("first_name", "last_name", "email", "phone", "company",
                   "address", "city", "state", "zipcode", "comments")
+        labels = {
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "email": "E-mail",
+            "zipcode": "ZIP/Postal Code"
+        }
+        widgets = {
+            "comments": forms.Textarea(attrs={"class": "materialize-textarea"})
+        }

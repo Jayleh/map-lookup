@@ -22,7 +22,8 @@ def add_reseller(request):
         "title": "Latest Posts",
         "form": form,
         "field_names": {'first_name', 'last_name', 'email', 'phone'},
-        "field_location": {'city', 'state', 'zipcode'}
+        "field_location": {'city', 'state', 'zipcode'},
+        "field_geocode": {'latitude', 'longitude'}
     }
 
     if request.method == "POST":
@@ -32,13 +33,15 @@ def add_reseller(request):
             state = form.cleaned_data['state']
             zipcode = form.cleaned_data['zipcode']
 
+            instance = form.save(commit=False)
+
             try:
                 latitude, longitude = get_location(address, city, state, zipcode)
 
-                form.cleaned_data["latitude"] = latitude
-                form.cleaned_data["longitude"] = longitude
+                instance.latitude = latitude
+                instance.longitude = longitude
 
-                form.save()
+                instance.save()
             except Exception as e:
                 print(e)
 

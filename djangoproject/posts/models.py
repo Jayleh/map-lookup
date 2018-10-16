@@ -1,15 +1,11 @@
 from django.db import models
-from django.core.validators import RegexValidator, EmailValidator
+from django.core.validators import EmailValidator
 from localflavor.us.models import USStateField, USZipCodeField
 from phonenumber_field.modelfields import PhoneNumberField
 # Create your models here.
 
 
 class Resellers(models.Model):
-    phone_regex = RegexValidator(
-        regex=r'^\d{10,15}$',
-        message="Please enter phone number with only numbers (no dashes).")
-
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.CharField(validators=[EmailValidator()], max_length=100, unique=True)
@@ -19,7 +15,7 @@ class Resellers(models.Model):
     city = models.CharField(max_length=100)
     state = USStateField()
     zipcode = USZipCodeField()
-    comments = models.TextField(max_length=600)
+    comments = models.TextField(max_length=600, blank=True)
     latitude = models.CharField(max_length=60)
     longitude = models.CharField(max_length=60)
 

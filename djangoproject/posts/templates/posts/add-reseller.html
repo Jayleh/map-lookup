@@ -19,7 +19,7 @@
         {% if form.errors %}
         {% for field in form %}
         {% if field.name in field_names %}
-        <div class="input-field col s6">
+        <div class="input-field col s12 m6">
           {{ field }}
           {{ field.label_tag }}
           {% for error in field.errors %}
@@ -27,13 +27,15 @@
           {% endfor %}
         </div>
         {% elif field.name in field_location %}
-        <div class="input-field col s4">
+        <div class="input-field col s12 m4">
           {{ field }}
           {{ field.label_tag }}
           {% for error in field.errors %}
           <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
           {% endfor %}
         </div>
+        {% elif field.name in field_geocode %}
+        {{ field }}
         {% else %}
         <div class="input-field col s12">
           {{ field }}
@@ -47,15 +49,17 @@
         {% else %}
         {% for field in form %}
         {% if field.name in field_names %}
-        <div class="input-field col s6">
+        <div class="input-field col s12 m6">
           {{ field }}
           {{ field.label_tag }}
         </div>
         {% elif field.name in field_location %}
-        <div class="input-field col s4">
+        <div class="input-field col s12 m4">
           {{ field }}
           {{ field.label_tag }}
         </div>
+        {% elif field.name in field_geocode %}
+        {{ field }}
         {% else %}
         <div class="input-field col s12">
           {{ field }}
