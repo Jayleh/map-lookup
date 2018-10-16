@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import ResellerForm
 from .models import Resellers
+from .location import get_location
 
 
 def home(request):
@@ -26,7 +27,21 @@ def add_reseller(request):
 
     if request.method == "POST":
         if form.is_valid():
-            form.save()
+            address = form.cleaned_data['address']
+            city = form.cleaned_data['city']
+            state = form.cleaned_data['state']
+            zipcode = form.cleaned_data['zipcode']
+
+            try:
+                latitude, longitude = get_location(address, city, state, zipcode)
+
+                form.cleaned_data["latitude"] = latitude
+                form.cleaned_data["longitude"] = longitude
+
+                form.save()
+            except Exception as e:
+                print(e)
+
             return redirect("home")
 
     return render(request, "posts/add-reseller.html", context)

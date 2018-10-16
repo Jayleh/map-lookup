@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{% static 'posts/css/styles.css' %}">
 {% endblock styles %}
 {% block main %}
-<div class="card side-panel close">
+<div class="card side-panel open">
   <div class="card-content">
     <ul class="collapsible">
       {% for reseller in resellers %}
@@ -39,7 +39,8 @@
   </div>
 </div>
 <div class="open-sidenav show-on-large">
-  <a class="btn-floating btn waves-effect waves-light red"><i class="material-icons">graphic_eq</i></a>
+  <a class="btn-floating btn waves-effect waves-light red tooltipped" data-position="left" data-tooltip="Toggle Side Panel"><i
+      class="material-icons">graphic_eq</i></a>
 </div>
 {% endblock main %}
 {% block scripts %}

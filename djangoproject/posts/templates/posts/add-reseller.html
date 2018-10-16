@@ -18,6 +18,23 @@
         {% csrf_token %}
         {% if form.errors %}
         {% for field in form %}
+        {% if field.name in field_names %}
+        <div class="input-field col s6">
+          {{ field }}
+          {{ field.label_tag }}
+          {% for error in field.errors %}
+          <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
+          {% endfor %}
+        </div>
+        {% elif field.name in field_location %}
+        <div class="input-field col s4">
+          {{ field }}
+          {{ field.label_tag }}
+          {% for error in field.errors %}
+          <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
+          {% endfor %}
+        </div>
+        {% else %}
         <div class="input-field col s12">
           {{ field }}
           {{ field.label_tag }}
@@ -25,6 +42,7 @@
           <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
           {% endfor %}
         </div>
+        {% endif %}
         {% endfor %}
         {% else %}
         {% for field in form %}

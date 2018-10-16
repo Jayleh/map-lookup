@@ -9,7 +9,7 @@
     height: 100%;
     width: 300px;
     margin: 0;
-    transform: translateX(-105%);
+    transform: translateX(0%);
     transition: transform 400ms;
 }
 

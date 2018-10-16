@@ -1,5 +1,6 @@
 from django import forms
 from localflavor.us.forms import USStateSelect, USZipCodeField
+from phonenumber_field.formfields import PhoneNumberField
 from .models import Resellers
 
 
@@ -7,7 +8,7 @@ class ResellerForm(forms.ModelForm):
     first_name = forms.CharField(label="First Name", max_length=100)
     last_name = forms.CharField(label="Last Name", max_length=100)
     email = forms.EmailField(label='E-mail')
-    phone = forms.CharField(max_length=17)
+    phone = PhoneNumberField()
     company = forms.CharField(max_length=100)
     address = forms.CharField(max_length=100)
     city = forms.CharField(max_length=100)
