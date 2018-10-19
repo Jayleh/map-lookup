@@ -1,3 +1,7 @@
+html {
+    height: 100%;
+}
+
 .open-sidenav {
     position: absolute;
     right: 4%;
@@ -21,4 +25,17 @@
 
 .reseller-info i {
     padding-right: 10px;
+}
+
+#map {
+    height: 100vh;
+}
+
+.open-sidenav,
+#map {
+    z-index: 0;
+}
+
+.side-panel {
+    z-index: 1;
 }
