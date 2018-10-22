@@ -1,0 +1,85 @@
+{% extends 'posts/layout.html' %}
+{% block styles %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'posts/css/styles.css' %}">
+{% endblock styles %}
+{% block header %}
+<div class="container">
+  <div class="row">
+    <h3>Update Reseller</h3>
+  </div>
+</div>
+{% endblock header %}
+{% block main %}
+<div class="container">
+  <div class="row">
+    <div class="card-panel">
+      <form method="POST" action="">
+        {% csrf_token %}
+        {% if form.errors %}
+        {% for field in form %}
+        {% if field.name in field_names %}
+        <div class="input-field col s12 m6">
+          {{ field }}
+          {{ field.label_tag }}
+          {% for error in field.errors %}
+          <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
+          {% endfor %}
+        </div>
+        {% elif field.name in field_location %}
+        <div class="input-field col s12 m4">
+          {{ field }}
+          {{ field.label_tag }}
+          {% for error in field.errors %}
+          <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
+          {% endfor %}
+        </div>
+        {% elif field.name in field_geocode %}
+        {{ field }}
+        {% else %}
+        <div class="input-field col s12">
+          {{ field }}
+          {{ field.label_tag }}
+          {% for error in field.errors %}
+          <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        {% for field in form %}
+        {% if field.name in field_names %}
+        <div class="input-field col s12 m6">
+          {{ field }}
+          {{ field.label_tag }}
+        </div>
+        {% elif field.name in field_location %}
+        <div class="input-field col s12 m4">
+          {{ field }}
+          {{ field.label_tag }}
+        </div>
+        {% elif field.name in field_geocode %}
+        {{ field }}
+        {% else %}
+        <div class="input-field col s12">
+          {{ field }}
+          {{ field.label_tag }}
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        <input type="submit" class="btn" value="Submit">
+      </form>
+    </div>
+  </div>
+</div>
+<div class="container center-align">
+  <div class="row">
+    <a href="/admin">Admin Login</a>
+  </div>
+</div>
+{% endblock main %}
+{% block scripts %}
+{% load static %}
+<script src="{% static 'posts/js/forms.js' %}"></script>
+{% endblock scripts %}

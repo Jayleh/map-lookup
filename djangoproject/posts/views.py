@@ -51,6 +51,43 @@ def add_reseller(request):
     return render(request, "posts/add-reseller.html", context)
 
 
+def update_reseller(request, id):
+    reseller = Resellers.objects.get(id=id)
+
+    form = ResellerForm(request.POST or None, instance=reseller)
+
+    context = {
+        "title": "Update Reseller",
+        "form": form,
+        "field_names": {'first_name', 'last_name', 'email', 'phone'},
+        "field_location": {'city', 'state', 'zipcode'},
+        "field_geocode": {'latitude', 'longitude'}
+    }
+
+    if request.method == "POST":
+        if form.is_valid():
+            address = form.cleaned_data['address']
+            city = form.cleaned_data['city']
+            state = form.cleaned_data['state']
+            zipcode = form.cleaned_data['zipcode']
+
+            instance = form.save(commit=False)
+
+            try:
+                latitude, longitude = get_location(address, city, state, zipcode)
+
+                instance.latitude = latitude
+                instance.longitude = longitude
+
+                instance.save()
+            except Exception as e:
+                print(e)
+
+            return redirect("home")
+
+    return render(request, "posts/update-reseller.html", context)
+
+
 def reseller_data(self):
 
     resellers = Resellers.objects.all().order_by('first_name')

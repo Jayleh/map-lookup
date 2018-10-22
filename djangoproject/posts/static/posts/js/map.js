@@ -24,14 +24,14 @@ function generateMap() {
                 city = element.city,
                 state = element.state,
                 zipcode = element.zipcode,
-                comment = element.comments,
+                comments = element.comments,
                 latitude = element.latitude,
                 longitude = element.longitude;
 
             // Create marker and bind a pop-up
             let resellerMarker = L.marker([latitude, longitude])
                 .bindPopup(
-                    `<h5>${first_name} ${last_name}</h5><p>${email}</p><p>${city}, ${state}</p>`
+                    `<h6>${first_name} ${last_name}</h6><ul><li>${company}</li><li>${address}</li><li>${city}, ${state} ${zipcode}</li><li>em: ${email}</li><li>ph: ${phone}</li><li>Notes: ${comments}</li></ul></p>`
                 );
 
             // Push markers to list
@@ -52,11 +52,6 @@ function generateMap() {
         createMap(resellerLocations, clusterMarkers);
     });
 }
-
-
-// Run generateMap on initial load
-generateMap();
-
 
 function createMap(orderLocations, clusterMarkers) {
     // Mapbox wordmark
@@ -104,3 +99,6 @@ function createMap(orderLocations, clusterMarkers) {
         })
         .addTo(myMap);
 }
+
+// Run generateMap on initial load
+generateMap();

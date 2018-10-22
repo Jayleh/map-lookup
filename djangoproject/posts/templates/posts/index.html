@@ -3,9 +3,9 @@
 {% load static %}
 <!-- Leaflet CSS & JS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
-    crossorigin="" />
+  crossorigin="" />
 <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
-    crossorigin=""></script>
+  crossorigin=""></script>
 <!-- Leaflet timeline plugin -->
 <script src="https://cdn.jsdelivr.net/npm/leaflet.timeline@1.2.1/dist/leaflet.timeline.min.js"></script>
 <!-- Marker Cluster JS & CSS -->
@@ -16,8 +16,19 @@
 <link rel="stylesheet" href="{% static 'posts/css/styles.css' %}">
 {% endblock styles %}
 {% block main %}
-<div class="card side-panel open">
+<div class="card side-panel" data-js="side-panel">
   <div class="card-content">
+    <nav class="nav-search">
+      <div class="nav-wrapper">
+        <form data-js="form-search">
+          <div class="input-field">
+            <input id="search" type="search" required>
+            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+            <i class="material-icons">close</i>
+          </div>
+        </form>
+      </div>
+    </nav>
     <ul class="collapsible">
       {% for reseller in resellers %}
       <li>
@@ -41,6 +52,8 @@
             <i class="material-icons">phone</i>
             <p>{{ reseller.phone }}</p>
           </div>
+          <a href="/update-reseller/{{ reseller.id }}" class="btn waves-effect light-effect update-reseller-button"
+            data-js="update-reseller-button">Update</a>
         </div>
       </li>
       {% endfor %}
@@ -51,7 +64,7 @@
   </div>
 </div>
 <div id="map"></div>
-<div class="open-sidenav show-on-large">
+<div class="open-sidenav" data-js="open-sidenav">
   <a class="btn-floating btn waves-effect waves-light red tooltipped" data-position="left" data-tooltip="Toggle Side Panel"><i
       class="material-icons">graphic_eq</i></a>
 </div>

@@ -1,30 +1,33 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Initialize collapsible
-    let $collapsible = document.querySelector('.collapsible');
-    M.Collapsible.init($collapsible);
+(() => {
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize collapsible
+        const $collapsible = document.querySelector('.collapsible');
+        M.Collapsible.init($collapsible);
 
-    // Initialize tooltips
-    let $toolTips = document.querySelectorAll('.tooltipped');
-    M.Tooltip.init($toolTips);
+        // Initialize tooltips
+        const $toolTips = document.querySelectorAll('.tooltipped');
+        M.Tooltip.init($toolTips);
 
-    // Side panel
-    let sideNav = document.querySelector('.side-panel');
+        // Initialize scrollspy
+        const $scrollspy = document.querySelector('.scrollspy');
+        M.ScrollSpy.init($scrollspy);
 
-    // Side panel open and close buttons
-    let openSidenavBtn = document.querySelector('.open-sidenav');
+        const sideNav = document.querySelector('[data-js=side-panel]');
+        const openSidenavBtn = document.querySelector('[data-js=open-sidenav]');
+        const formSearch = document.querySelector('[data-js=form-search]')
 
-    openSidenavBtn.addEventListener('click', function () {
-        let sideNavClassList = sideNav.classList;
+        formSearch &&
+            formSearch.addEventListener("submit", event => {
+                event.preventDefault();
+            });
 
-        if (sideNavClassList.contains('open')) {
-            sideNav.style.transform = "translateX(-105%)";
-            sideNavClassList.remove('open');
-            sideNavClassList.add('close');
-        }
-        else if (sideNavClassList.contains('close')) {
-            sideNav.style.transform = "translateX(0%)";
-            sideNavClassList.remove('close');
-            sideNavClassList.add('open');
-        }
+        openSidenavBtn &&
+            openSidenavBtn.addEventListener('click', event => {
+                event.preventDefault();
+
+                // Toggle opening and closing of sideNav
+                sideNav.classList.toggle("side-panel--close");
+            });
     });
-});
+})();
+

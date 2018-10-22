@@ -15,6 +15,16 @@ html {
     margin: 0;
     transform: translateX(0%);
     transition: transform 400ms;
+    z-index: 1;
+}
+
+.side-panel--close {
+    transform: translateX(-105%);
+}
+
+.nav-search {
+    margin-bottom: 24px;
+    background-color: #26a69a;
 }
 
 .reseller-info {
@@ -27,15 +37,11 @@ html {
     padding-right: 10px;
 }
 
-#map {
-    height: 100vh;
-}
-
 .open-sidenav,
 #map {
     z-index: 0;
 }
 
-.side-panel {
-    z-index: 1;
+#map {
+    height: 100vh;
 }
