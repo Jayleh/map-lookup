@@ -1,7 +1,7 @@
-{% extends 'posts/layout.html' %}
+{% extends 'mapapp/layout.html' %}
 {% block styles %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'posts/css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'mapapp/css/styles.css' %}">
 {% endblock styles %}
 {% block header %}
 <div class="row">
@@ -9,7 +9,7 @@
     <div class="nav-wrapper">
       <div class="container">
         <a href="/" class="breadcrumb">Map</a>
-        <a href="/add-reseller" class="breadcrumb">Add Reseller</a>
+        <a href="/update-reseller/{{ reseller.id }}" class="breadcrumb">Add Reseller</a>
       </div>
     </div>
   </nav>
@@ -113,5 +113,5 @@
 {% endblock main %}
 {% block scripts %}
 {% load static %}
-<script src="{% static 'posts/js/forms.js' %}"></script>
+<script src="{% static 'mapapp/js/forms.js' %}"></script>
 {% endblock scripts %}

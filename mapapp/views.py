@@ -9,18 +9,18 @@ def home(request):
     resellers = Resellers.objects.all().order_by('first_name')
 
     context = {
-        "title": "Latest Posts",
+        "title": "Reseller Map",
         "resellers": resellers
     }
 
-    return render(request, "posts/index.html", context)
+    return render(request, "mapapp/index.html", context)
 
 
 def add_reseller(request):
     form = ResellerForm(request.POST or None)
 
     context = {
-        "title": "Latest Posts",
+        "title": "Add Reseller",
         "form": form,
         "field_first_row": {'first_name', 'last_name'},
         "field_names": {'first_name', 'last_name', 'email', 'phone'},
@@ -49,7 +49,7 @@ def add_reseller(request):
 
             return redirect("home")
 
-    return render(request, "posts/add-reseller.html", context)
+    return render(request, "mapapp/add-reseller.html", context)
 
 
 def update_reseller(request, id):
@@ -87,7 +87,7 @@ def update_reseller(request, id):
 
             return redirect("home")
 
-    return render(request, "posts/update-reseller.html", context)
+    return render(request, "mapapp/update-reseller.html", context)
 
 
 def reseller_data(self):
