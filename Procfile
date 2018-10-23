@@ -1,0 +1,1 @@
+web: gunicorn djangoproject/manage:app
