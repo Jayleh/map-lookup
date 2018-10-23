@@ -1,1 +1,1 @@
-web: gunicorn djangoproject/manage:app
+web: gunicorn manage:app
