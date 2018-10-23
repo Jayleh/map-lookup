@@ -4,48 +4,85 @@
 <link rel="stylesheet" href="{% static 'posts/css/styles.css' %}">
 {% endblock styles %}
 {% block header %}
-<div class="container">
-  <div class="row">
-    <h3>Add New Reseller</h3>
-  </div>
+<div class="row">
+  <nav class="teal">
+    <div class="nav-wrapper">
+      <div class="container">
+        <a href="/" class="breadcrumb">Map</a>
+        <a href="/add-reseller" class="breadcrumb">Add Reseller</a>
+      </div>
+    </div>
+  </nav>
 </div>
 {% endblock header %}
 {% block main %}
 <div class="container">
   <div class="row">
     <div class="card-panel">
-      <form method="POST" action="">
+      <form class="form" method="POST" action="">
         {% csrf_token %}
         {% if form.errors %}
+        <div class="row">
+          {% for field in form %}
+          {% if field.name == "first_name" or field.name == "last_name" %}
+          <div class="input-field col s12 m6">
+            {{ field }}
+            {{ field.label_tag }}
+            {% for error in field.errors %}
+            <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <div class="row">
+          {% for field in form %}
+          {% if field.name == "email" or field.name == "phone" %}
+          <div class="input-field col s12 m6">
+            {{ field }}
+            {{ field.label_tag }}
+            {% for error in field.errors %}
+            <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
         {% for field in form %}
-        {% if field.name in field_names %}
-        <div class="input-field col s12 m6">
-          {{ field }}
-          {{ field.label_tag }}
-          {% for error in field.errors %}
-          <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
-          {% endfor %}
-        </div>
-        {% elif field.name in field_location %}
-        <div class="input-field col s12 m4">
-          {{ field }}
-          {{ field.label_tag }}
-          {% for error in field.errors %}
-          <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
-          {% endfor %}
-        </div>
-        {% elif field.name in field_geocode %}
-        {{ field }}
-        {% else %}
-        <div class="input-field col s12">
-          {{ field }}
-          {{ field.label_tag }}
-          {% for error in field.errors %}
-          <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
-          {% endfor %}
+        {% if field.name == "company" or field.name == "address" %}
+        <div class="row">
+          <div class="input-field col s12">
+            {{ field }}
+            {{ field.label_tag }}
+            {% for error in field.errors %}
+            <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
+            {% endfor %}
+          </div>
         </div>
         {% endif %}
         {% endfor %}
+        <div class="row">
+          {% for field in form %}
+          {% if field.name == "city" or field.name == "state" or field.name == "zipcode" %}
+          <div class="input-field col s12 m4">
+            {{ field }}
+            {{ field.label_tag }}
+            {% for error in field.errors %}
+            <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            {{ form.comments }}
+            {{ form.comments.label_tag }}
+            {% for error in form.comments.errors %}
+            <span class="helper-text" style="color: #f44336">{{ error|escape }}</span>
+            {% endfor %}
+          </div>
+        </div>
         {% else %}
         {% for field in form %}
         {% if field.name in field_names %}
@@ -71,11 +108,6 @@
         <input type="submit" class="btn" value="Submit">
       </form>
     </div>
-  </div>
-</div>
-<div class="container center-align">
-  <div class="row">
-    <a href="/admin">Admin Login</a>
   </div>
 </div>
 {% endblock main %}

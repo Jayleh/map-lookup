@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from .forms import ResellerForm
 from .models import Resellers
 from .location import get_location
@@ -22,6 +22,7 @@ def add_reseller(request):
     context = {
         "title": "Latest Posts",
         "form": form,
+        "field_first_row": {'first_name', 'last_name'},
         "field_names": {'first_name', 'last_name', 'email', 'phone'},
         "field_location": {'city', 'state', 'zipcode'},
         "field_geocode": {'latitude', 'longitude'}
@@ -59,6 +60,7 @@ def update_reseller(request, id):
     context = {
         "title": "Update Reseller",
         "form": form,
+        "reseller": reseller,
         "field_names": {'first_name', 'last_name', 'email', 'phone'},
         "field_location": {'city', 'state', 'zipcode'},
         "field_geocode": {'latitude', 'longitude'}

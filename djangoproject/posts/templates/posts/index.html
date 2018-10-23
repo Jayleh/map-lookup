@@ -22,42 +22,44 @@
       <div class="nav-wrapper">
         <form data-js="form-search">
           <div class="input-field">
-            <input id="search" type="search" required>
+            <input id="search" data-js="search" type="search" required>
             <label class="label-icon" for="search"><i class="material-icons">search</i></label>
             <i class="material-icons">close</i>
           </div>
         </form>
       </div>
     </nav>
-    <ul class="collapsible">
-      {% for reseller in resellers %}
-      <li>
-        <div class="collapsible-header">
-          <span><strong>{{ reseller.first_name }} {{ reseller.last_name }}</strong>
-            &nbsp;&nbsp;{{ reseller.city }}, {{ reseller.state }}</span>
-        </div>
-        <div class="collapsible-body">
-          <div class="reseller-info">
-            <i class="material-icons">home</i>
-            <div class="address">
-              <p>{{ reseller.address }}</p>
-              <p>{{ reseller.city }}, {{ reseller.state }}</p>
+    <div class="reseller-list-container">
+      <ul class="collapsible" data-js="reseller-list">
+        {% for reseller in resellers %}
+        <li>
+          <div class="collapsible-header">
+            <span><strong>{{ reseller.first_name }} {{ reseller.last_name }}</strong>
+              &nbsp;&nbsp;{{ reseller.city }}, {{ reseller.state }}</span>
+          </div>
+          <div class="collapsible-body">
+            <div class="reseller-info">
+              <i class="material-icons">home</i>
+              <div class="address">
+                <p>{{ reseller.address }}</p>
+                <p>{{ reseller.city }}, {{ reseller.state }}</p>
+              </div>
             </div>
+            <div class="reseller-info">
+              <i class="material-icons">email</i>
+              <p>{{ reseller.email }}</p>
+            </div>
+            <div class="reseller-info">
+              <i class="material-icons">phone</i>
+              <p>{{ reseller.phone }}</p>
+            </div>
+            <a href="/update-reseller/{{ reseller.id }}" class="btn waves-effect light-effect update-reseller-button"
+              data-js="update-reseller-button">Update</a>
           </div>
-          <div class="reseller-info">
-            <i class="material-icons">email</i>
-            <p>{{ reseller.email }}</p>
-          </div>
-          <div class="reseller-info">
-            <i class="material-icons">phone</i>
-            <p>{{ reseller.phone }}</p>
-          </div>
-          <a href="/update-reseller/{{ reseller.id }}" class="btn waves-effect light-effect update-reseller-button"
-            data-js="update-reseller-button">Update</a>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
   <div class="card-action center-align">
     <a href="/add-reseller" class="btn small waves-effect waves-light">Add New Reseller</a>

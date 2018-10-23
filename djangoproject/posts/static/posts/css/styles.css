@@ -2,6 +2,10 @@ html {
     height: 100%;
 }
 
+.form .row {
+    margin-bottom: 0px !important;
+}
+
 .open-sidenav {
     position: absolute;
     right: 4%;
@@ -23,8 +27,13 @@ html {
 }
 
 .nav-search {
-    margin-bottom: 24px;
+    margin-bottom: 17px;
     background-color: #26a69a;
+}
+
+.reseller-list-container {
+    height: 70vh;
+    overflow: auto;
 }
 
 .reseller-info {
@@ -44,4 +53,40 @@ html {
 
 #map {
     height: 100vh;
+}
+
+.teal {
+    background-color: #26a69a !important;
+}
+
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (orientation: landscape) {
+    .reseller-list-container {
+        height: 45vh;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .reseller-list-container {
+        height: 80vh;
+    }
+}
+
+@media (min-width: 768px) and (orientation: landscape) {
+    .reseller-list-container {
+        height: 45vh;
+    }
+}
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .reseller-list-container {
+        height: 73vh;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
 }
