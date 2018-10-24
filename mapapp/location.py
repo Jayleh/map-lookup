@@ -14,19 +14,7 @@ def get_location(address, city, state, zipcode):
 
     response = requests.get(endpoint).json()
 
-    print(response)
+    latitude = response["results"][0]["geometry"]["location"]["lat"]
+    longitude = response["results"][0]["geometry"]["location"]["lng"]
 
-    try:
-        latitude = response["results"][0]["geometry"]["location"]["lat"]
-        longitude = response["results"][0]["geometry"]["location"]["lng"]
-
-        print(latitude)
-        print(longitude)
-
-        return latitude, longitude
-        
-    except Exception as e:
-        print(e)
-        print("Did not grab latitude and longitude!")
-
-    return None
+    return latitude, longitude
