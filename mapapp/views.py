@@ -46,6 +46,7 @@ def add_reseller(request):
                 instance.save()
             except Exception as e:
                 print(e)
+                raise
 
             return redirect("home")
 
