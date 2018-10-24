@@ -77,16 +77,16 @@ WSGI_APPLICATION = 'map-lookup.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'map-lookup',
-#         'USER': 'root',
-#         'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
-#         'HOST': 'localhost',
-#         'PORT': ''
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'map-lookup',
+        'USER': 'root',
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': ''
+    }
+}
 
 
 # Password validation
