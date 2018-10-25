@@ -1,6 +1,8 @@
 {% extends 'mapapp/layout.html' %}
 {% block styles %}
 {% load static %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+  crossorigin="anonymous">
 <link rel="stylesheet" href="{% static 'mapapp/css/styles.css' %}">
 {% endblock styles %}
 {% block header %}
@@ -16,6 +18,33 @@
 </div>
 {% endblock header %}
 {% block main %}
+<div class="container">
+  <div class="row">
+    <div class="import-export d-flex flex-start">
+      <a class="modal-trigger" href="#modal1"><span><i class="fas fa-download"></i></span>Import</a>
+      <a href="javascript:void(0)"><span><i class="fas fa-upload"></i></span>Export</a>
+    </div>
+  </div>
+</div>
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+  <form action="#">
+    <div class="modal-content">
+      <div class="file-field input-field">
+        <div class="btn">
+          <span>File</span>
+          <input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text" required>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input class="btn" type="submit" name="submit">
+    </div>
+  </form>
+</div>
 <div class="container">
   <div class="row">
     <div class="card-panel">
