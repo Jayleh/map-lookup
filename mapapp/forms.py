@@ -19,3 +19,8 @@ class ResellerForm(forms.ModelForm):
         widgets = {
             "comments": forms.Textarea(attrs={"class": "materialize-textarea"})
         }
+
+
+class UploadFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file = forms.FileField()

@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from .forms import ResellerForm
+from django.contrib import messages
+from django.core.files.storage import FileSystemStorage
+from .forms import ResellerForm, UploadFileForm
 from .models import Resellers
 from .location import get_location
 
@@ -17,11 +19,13 @@ def home(request):
 
 
 def add_reseller(request):
-    form = ResellerForm(request.POST or None)
+    reseller_form = ResellerForm(request.POST or None)
+    file_form = UploadFileForm(request.POST or None)
 
     context = {
         "title": "Add Reseller",
-        "form": form,
+        "reseller_form": reseller_form,
+        "file_form": file_form,
         "field_first_row": {'first_name', 'last_name'},
         "field_names": {'first_name', 'last_name', 'email', 'phone'},
         "field_location": {'city', 'state', 'zipcode'},
@@ -29,13 +33,15 @@ def add_reseller(request):
     }
 
     if request.method == "POST":
-        if form.is_valid():
-            address = form.cleaned_data['address']
-            city = form.cleaned_data['city']
-            state = form.cleaned_data['state']
-            zipcode = form.cleaned_data['zipcode']
+        if reseller_form.is_valid():
+            first_name = reseller_form.cleaned_data['first_name']
+            last_name = reseller_form.cleaned_data['last_name']
+            address = reseller_form.cleaned_data['address']
+            city = reseller_form.cleaned_data['city']
+            state = reseller_form.cleaned_data['state']
+            zipcode = reseller_form.cleaned_data['zipcode']
 
-            instance = form.save(commit=False)
+            instance = reseller_form.save(commit=False)
 
             try:
                 latitude, longitude = get_location(address, city, state, zipcode)
@@ -48,7 +54,16 @@ def add_reseller(request):
                 print(e)
                 raise
 
-            return redirect("home")
+            messages.success(request, f"{first_name} {last_name} successfully added.")
+
+            return redirect("add_reseller")
+        elif file_form.is_valid():
+
+            messages.success(request, f"Resellers succesfully imported.")
+
+            return redirect("add_reseller")
+        else:
+            messages.error(request, f"Oops, something went wrong.")
 
     return render(request, "mapapp/add-reseller.html", context)
 
@@ -69,6 +84,8 @@ def update_reseller(request, id):
 
     if request.method == "POST":
         if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
             address = form.cleaned_data['address']
             city = form.cleaned_data['city']
             state = form.cleaned_data['state']
@@ -85,6 +102,13 @@ def update_reseller(request, id):
                 instance.save()
             except Exception as e:
                 print(e)
+
+            messages.success(request, f"{first_name} {last_name} successfully updated.")
+
+            return redirect("home")
+
+        else:
+            messages.error(request, f"Oops, something went wrong.")
 
             return redirect("home")
 

@@ -11,7 +11,11 @@ html {
 }
 
 .flex-start {
-    align-items: flex-start!important;
+    align-items: flex-start !important;
+}
+
+.between {
+    justify-content: space-between !important;
 }
 
 .open-sidenav {
@@ -23,15 +27,24 @@ html {
 .side-panel {
     position: fixed;
     height: 100%;
-    width: 300px;
+    width: 250px;
     margin: 0;
     transform: translateX(0%);
     transition: transform 400ms;
     z-index: 1;
 }
 
+.leaflet-top.leaflet-left {
+    transform: translateX(250px);
+    transition: transform 400ms;
+}
+
 .side-panel--close {
     transform: translateX(-105%);
+}
+
+.zoom-panel--close {
+    transform: translateX(0) !important;
 }
 
 .nav-search {
@@ -67,26 +80,43 @@ html {
     background-color: #26a69a !important;
 }
 
-.import-export a {
-    color: #616161;
-    font-size: 16px;
-    padding: 0 10px 0 10px;
+.messages {
+    position: absolute;
 }
 
-.import-export a span {
-    padding-right: 5px;
+.messages:hover {
+    cursor: pointer;
 }
 
+.success {
+    background-color: #37474f;
+}
+
+.error {
+    background-color: #c62828;
+}
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (orientation: landscape) {
     .reseller-list-container {
         height: 45vh;
     }
+
+    .messages {
+        right: 5%;
+    }
 }
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+    .side-panel {
+        width: 300px;
+    }
+    
+    .leaflet-top.leaflet-left {
+        transform: translateX(300px);
+    }
+    
     .reseller-list-container {
         height: 80vh;
     }

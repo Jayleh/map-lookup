@@ -10,7 +10,7 @@ function generateMap() {
         // Creating a new marker cluster group
         let clusterMarkers = L.markerClusterGroup();
 
-        // Get shipped orders length
+        // Get resellers length
         let resellers = resellerData.resellers;
 
         resellers.forEach((element, index) => {

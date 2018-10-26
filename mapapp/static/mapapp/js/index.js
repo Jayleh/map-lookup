@@ -14,6 +14,7 @@
         const input = document.querySelector('[data-js=search]');
         const resellerList = document.querySelector('[data-js=reseller-list]');
         const li = Array.from(resellerList.getElementsByTagName('li'));
+        const flashCloseButton = document.querySelector('.flash-close');
 
         formSearch &&
             formSearch.addEventListener('submit', event => {
@@ -26,6 +27,10 @@
 
                 // Toggle opening and closing of sideNav
                 sideNav.classList.toggle('side-panel--close');
+
+                // Move zoom panel
+                const zoomPanel = document.querySelector('div.leaflet-top.leaflet-left');
+                zoomPanel.classList.toggle('zoom-panel--close')
             });
 
         // Filter search bar
@@ -45,6 +50,13 @@
                         element.style.display = "none";
                     }
                 });
+            });
+
+        // Click event on flash message
+        flashCloseButton &&
+            flashCloseButton.addEventListener("click", function () {
+                const flashMessage = document.querySelector('.messages');
+                flashMessage.parentNode.removeChild(flashMessage);
             });
     });
 })();
