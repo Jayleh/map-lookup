@@ -19,8 +19,8 @@
 {% endblock header %}
 {% block main %}
 <div class="container">
-  <div class="row d-flex between valign-wrapper">
-    <div class="import-export d-flex flex-start">
+  <div class="row d-flex flex-between valign-wrapper">
+    <div class="import-export d-flex">
       <a class="modal-trigger" href="#modal1"><span><i class="fas fa-download"></i></span>Import</a>
       <a href="javascript:void(0)"><span><i class="fas fa-upload"></i></span>Export</a>
     </div>
@@ -31,12 +31,19 @@
       <i class="material-icons flash-close">cancel</i>
     </div>
     {% endfor %}
+    {% elif file_form.errors %}
+    {% for error in file_form.file.errors %}
+    <div class="toast messages error">
+      {{ error|escape }}
+      <i class="material-icons flash-close">cancel</i>
+    </div>
+    {% endfor %}
     {% endif %}
   </div>
 </div>
 <!-- Modal Structure -->
 <div id="modal1" class="modal">
-  <form action="#">
+  <form class="form" method="POST" action="/import-resellers" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="modal-content">
       <div class="file-field input-field">
@@ -57,7 +64,7 @@
 <div class="container">
   <div class="row">
     <div class="card-panel">
-      <form class="form" method="POST" action="">
+      <form class="form" method="POST" action="/add-one-reseller">
         {% csrf_token %}
         {% if reseller_form.errors %}
         <div class="row">

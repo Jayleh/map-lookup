@@ -1,6 +1,6 @@
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
-from .models import Resellers
+from .models import Resellers, UploadFile
 
 
 class ResellerForm(forms.ModelForm):
@@ -21,6 +21,8 @@ class ResellerForm(forms.ModelForm):
         }
 
 
-class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=50)
-    file = forms.FileField()
+class UploadFileForm(forms.ModelForm):
+
+    class Meta:
+        model = UploadFile
+        fields = ("file",)

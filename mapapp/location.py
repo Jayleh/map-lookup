@@ -18,3 +18,7 @@ def get_location(address, city, state, zipcode):
     longitude = response["results"][0]["geometry"]["location"]["lng"]
 
     return latitude, longitude
+
+
+def handle_import_file(file):
+    return None

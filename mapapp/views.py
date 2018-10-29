@@ -19,8 +19,25 @@ def home(request):
 
 
 def add_reseller(request):
-    reseller_form = ResellerForm(request.POST or None)
-    file_form = UploadFileForm(request.POST or None)
+    reseller_form = ResellerForm()
+    file_form = UploadFileForm()
+
+    context = {
+        "title": "Add Reseller",
+        "reseller_form": reseller_form,
+        "file_form": file_form,
+        "field_first_row": {'first_name', 'last_name'},
+        "field_names": {'first_name', 'last_name', 'email', 'phone'},
+        "field_location": {'city', 'state', 'zipcode'},
+        "field_geocode": {'latitude', 'longitude'}
+    }
+
+    return render(request, "mapapp/add-reseller.html", context)
+
+
+def add_one_reseller(request):
+    reseller_form = ResellerForm(request.POST)
+    file_form = UploadFileForm()
 
     context = {
         "title": "Add Reseller",
@@ -56,14 +73,30 @@ def add_reseller(request):
 
             messages.success(request, f"{first_name} {last_name} successfully added.")
 
-            return redirect("add_reseller")
-        elif file_form.is_valid():
-
-            messages.success(request, f"Resellers succesfully imported.")
-
-            return redirect("add_reseller")
         else:
             messages.error(request, f"Oops, something went wrong.")
+
+    return render(request, "mapapp/add-reseller.html", context)
+
+
+def import_resellers(request):
+    reseller_form = ResellerForm()
+    file_form = UploadFileForm(request.POST, request.FILES)
+
+    context = {
+        "title": "Add Reseller",
+        "reseller_form": reseller_form,
+        "file_form": file_form,
+        "field_first_row": {'first_name', 'last_name'},
+        "field_names": {'first_name', 'last_name', 'email', 'phone'},
+        "field_location": {'city', 'state', 'zipcode'},
+        "field_geocode": {'latitude', 'longitude'}
+    }
+
+    if request.method == "POST":
+        if file_form.is_valid():
+            file_form.save()
+            messages.success(request, f"Resellers succesfully imported.")
 
     return render(request, "mapapp/add-reseller.html", context)
 

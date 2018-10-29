@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import EmailValidator
+from django.core.validators import EmailValidator, FileExtensionValidator
 from localflavor.us.models import USStateField, USZipCodeField
 from phonenumber_field.modelfields import PhoneNumberField
 # Create your models here.
@@ -24,3 +24,10 @@ class Resellers(models.Model):
 
     class Meta:
         verbose_name_plural = "Resellers"
+
+
+class UploadFile(models.Model):
+    file = models.FileField(
+        upload_to='uploads/',
+        validators=[FileExtensionValidator(allowed_extensions=["csv", "xls", "xlsx"])]
+    )
