@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import messages
-from django.core.files.storage import FileSystemStorage
 from .forms import ResellerForm, UploadFileForm
 from .models import Resellers
-from .location import get_location
+from .location import get_location, FileHandler
 
 
 def home(request):
@@ -73,6 +72,7 @@ def add_one_reseller(request):
 
             messages.success(request, f"{first_name} {last_name} successfully added.")
 
+            return redirect("home")
         else:
             messages.error(request, f"Oops, something went wrong.")
 
@@ -95,7 +95,24 @@ def import_resellers(request):
 
     if request.method == "POST":
         if file_form.is_valid():
+            dir_name = "./media/uploads/"
+
+            file_handler = FileHandler(dir_name)
+
+            # Empty folder
+            file_handler.empty_folder()
+
+            # Save file
             file_form.save()
+
+            #
+            df = file_handler.handle_import_file()
+
+            print(df)
+
+            # Empty folder again
+            file_handler.empty_folder()
+
             messages.success(request, f"Resellers succesfully imported.")
 
     return render(request, "mapapp/add-reseller.html", context)
