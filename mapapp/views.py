@@ -108,7 +108,14 @@ def import_resellers(request):
             #
             df = file_handler.handle_import_file()
 
-            print(df)
+            db = Resellers.objects.all()
+
+            for reseller in db:
+                print(reseller.email)
+                print(reseller.address)
+
+            for index, row in df.iterrows():
+                print(row)
 
             # Empty folder again
             file_handler.empty_folder()
