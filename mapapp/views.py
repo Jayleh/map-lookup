@@ -110,12 +110,14 @@ def import_resellers(request):
 
             db = Resellers.objects.all()
 
-            for reseller in db:
-                print(reseller.email)
-                print(reseller.address)
+            # for reseller in db:
+            #     print(reseller.email)
+            #     print(reseller.address)
 
-            for index, row in df.iterrows():
-                print(row)
+            # for index, row in df.iterrows():
+            #     print(row)
+
+            print(df.columns)
 
             # Empty folder again
             file_handler.empty_folder()
