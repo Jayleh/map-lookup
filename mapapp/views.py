@@ -1,9 +1,11 @@
+import os
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, Http404
 from django.contrib import messages
+from django.conf import settings
 from .forms import ResellerForm, UploadFileForm
 from .models import Resellers
-from .location import get_location, FileHandler
+from .location import get_location, ImportHandler, ExportHandler
 
 
 def home(request):
@@ -97,16 +99,16 @@ def import_resellers(request):
         if file_form.is_valid():
             dir_name = "./media/uploads/"
 
-            file_handler = FileHandler(dir_name)
+            import_handler = ImportHandler(dir_name)
 
             # Empty folder
-            file_handler.empty_folder()
+            import_handler.empty_folder()
 
-            # Save file
+            # SaImport
             file_form.save()
 
             #
-            df = file_handler.handle_import_file()
+            df = import_handler.handle_import_file()
 
             db = Resellers.objects.all()
 
@@ -120,11 +122,34 @@ def import_resellers(request):
             print(df.columns)
 
             # Empty folder again
-            file_handler.empty_folder()
+            import_handler.empty_folder()
 
             messages.success(request, f"Resellers succesfully imported.")
 
     return render(request, "mapapp/add-reseller.html", context)
+
+
+def export_resellers(self):
+    dir_name = "./media/exports/"
+    db = Resellers.objects.all()
+
+    # Instantiate
+    export_handler = ExportHandler(dir_name)
+
+    # Empty folder
+    export_handler.empty_folder()
+
+    # Save csv
+    export_handler.handle_export(db)
+
+    export_file = export_handler.check_export()
+
+    file_path = os.path.join(settings.MEDIA_ROOT, f"exports/{export_file}")
+
+    with open(file_path, 'rb') as fh:
+        response = HttpResponse(fh.read(), content_type="text/csv")
+        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+        return response
 
 
 def update_reseller(request, id):

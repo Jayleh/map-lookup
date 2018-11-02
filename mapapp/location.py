@@ -1,6 +1,9 @@
 import os
 import requests
 import pandas as pd
+import datetime as dt
+import datedelta
+from django.conf import settings
 
 
 def get_location(address, city, state, zipcode):
@@ -34,7 +37,7 @@ def get_dataframe(dir_name, file):
     return None
 
 
-class FileHandler(object):
+class ImportHandler(object):
 
     def __init__(self, dir_name):
         self.dir_name = dir_name
@@ -52,3 +55,63 @@ class FileHandler(object):
         df = get_dataframe(self.dir_name, file)
 
         return df
+
+
+def get_time_now():
+    time_now = dt.datetime.today() - dt.timedelta(hours=7)
+    time_now = time_now.strftime("%Y%m%d%I%M%S")
+
+    return time_now
+
+
+class ExportHandler(object):
+
+    def __init__(self, dir_name):
+        self.dir_name = dir_name
+
+    def empty_folder(self):
+        # Delete any files in uploads folder
+        files = os.listdir(self.dir_name)
+
+        for file in files:
+            os.remove(os.path.join(self.dir_name, file))
+
+    def check_export(self):
+        files = os.listdir(self.dir_name)
+
+        for file in files:
+            if file != ".gitignore":
+                return file
+
+        return None
+
+    def handle_export(self, db):
+        data = []
+
+        for reseller in db:
+            reseller_data = {
+                "first_name": reseller.first_name,
+                "last_name": reseller.last_name,
+                "phone": reseller.phone,
+                "email": reseller.email,
+                "company": reseller.company,
+                "address": reseller.address,
+                "city": reseller.city,
+                "state": reseller.state,
+                "zipcode": reseller.zipcode,
+                "latitude": reseller.latitude,
+                "longitude": reseller.longitude,
+                "action": ""
+            }
+            data.append(reseller_data)
+
+        df = pd.DataFrame(data)
+
+        columns = ["first_name", "last_name", "phone", "email", "company",
+                   "address", "city", "state", "zipcode", "latitude", "longitude", "action"]
+
+        df = df[columns]
+
+        time = get_time_now()
+
+        df.to_csv(f"{self.dir_name}{time}_resellers_export.csv", encoding="utf-8", index=False)
