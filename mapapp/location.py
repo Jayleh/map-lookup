@@ -1,9 +1,37 @@
 import os
+import datetime as dt
 import requests
 import pandas as pd
-import datetime as dt
 import datedelta
-from django.conf import settings
+
+
+def get_location_from_search(address):
+    GEOCODE_API_KEY = os.environ.get('GEOCODE_API_KEY')
+
+    base_url = "https://maps.googleapis.com/maps/api/geocode/json?address"
+
+    # formatted_address = address.replace(" ", "+")
+
+    print(address)
+
+    endpoint = f"{base_url}={address}&key={GEOCODE_API_KEY}"
+
+    response = requests.get(endpoint).json()
+
+    print(response)
+
+    try:
+        latitude = response["results"][0]["geometry"]["location"]["lat"]
+        longitude = response["results"][0]["geometry"]["location"]["lng"]
+
+        return latitude, longitude
+
+    except Exception as e:
+        print(e)
+        latitude = "chicken"
+        longitude = "wings"
+
+        return latitude, longitude
 
 
 def get_location(address, city, state, zipcode):
@@ -90,6 +118,7 @@ class ExportHandler(object):
 
         for reseller in db:
             reseller_data = {
+                "id": reseller.id,
                 "first_name": reseller.first_name,
                 "last_name": reseller.last_name,
                 "phone": reseller.phone,
@@ -101,14 +130,15 @@ class ExportHandler(object):
                 "zipcode": reseller.zipcode,
                 "latitude": reseller.latitude,
                 "longitude": reseller.longitude,
+                "comments": reseller.comments,
                 "action": ""
             }
             data.append(reseller_data)
 
         df = pd.DataFrame(data)
 
-        columns = ["first_name", "last_name", "phone", "email", "company",
-                   "address", "city", "state", "zipcode", "latitude", "longitude", "action"]
+        columns = ["id", "first_name", "last_name", "phone", "email", "company", "address",
+                   "city", "state", "zipcode", "latitude", "longitude", "comments", "action"]
 
         df = df[columns]
 

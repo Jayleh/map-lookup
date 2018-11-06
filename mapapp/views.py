@@ -3,17 +3,20 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse, Http404
 from django.contrib import messages
 from django.conf import settings
-from .forms import ResellerForm, UploadFileForm
+from .forms import ResellerForm, UploadFileForm, AddressForm
 from .models import Resellers
-from .location import get_location, ImportHandler, ExportHandler
+from .location import get_location, get_location_from_search, ImportHandler, ExportHandler
 
 
 def home(request):
-    resellers = Resellers.objects.all().order_by('first_name')
+    resellers = Resellers.objects.all().order_by("first_name")
+
+    address_form = AddressForm()
 
     context = {
         "title": "Reseller Map",
-        "resellers": resellers
+        "resellers": resellers,
+        "address_form": address_form
     }
 
     return render(request, "mapapp/index.html", context)
@@ -27,10 +30,10 @@ def add_reseller(request):
         "title": "Add Reseller",
         "reseller_form": reseller_form,
         "file_form": file_form,
-        "field_first_row": {'first_name', 'last_name'},
-        "field_names": {'first_name', 'last_name', 'email', 'phone'},
-        "field_location": {'city', 'state', 'zipcode'},
-        "field_geocode": {'latitude', 'longitude'}
+        "field_first_row": {"first_name", "last_name"},
+        "field_names": {"first_name", "last_name", "email", "phone"},
+        "field_location": {"city", "state", "zipcode"},
+        "field_geocode": {"latitude", "longitude"}
     }
 
     return render(request, "mapapp/add-reseller.html", context)
@@ -44,20 +47,20 @@ def add_one_reseller(request):
         "title": "Add Reseller",
         "reseller_form": reseller_form,
         "file_form": file_form,
-        "field_first_row": {'first_name', 'last_name'},
-        "field_names": {'first_name', 'last_name', 'email', 'phone'},
-        "field_location": {'city', 'state', 'zipcode'},
-        "field_geocode": {'latitude', 'longitude'}
+        "field_first_row": {"first_name", "last_name"},
+        "field_names": {"first_name", "last_name", "email", "phone"},
+        "field_location": {"city", "state", "zipcode"},
+        "field_geocode": {"latitude", "longitude"}
     }
 
     if request.method == "POST":
         if reseller_form.is_valid():
-            first_name = reseller_form.cleaned_data['first_name']
-            last_name = reseller_form.cleaned_data['last_name']
-            address = reseller_form.cleaned_data['address']
-            city = reseller_form.cleaned_data['city']
-            state = reseller_form.cleaned_data['state']
-            zipcode = reseller_form.cleaned_data['zipcode']
+            first_name = reseller_form.cleaned_data["first_name"]
+            last_name = reseller_form.cleaned_data["last_name"]
+            address = reseller_form.cleaned_data["address"]
+            city = reseller_form.cleaned_data["city"]
+            state = reseller_form.cleaned_data["state"]
+            zipcode = reseller_form.cleaned_data["zipcode"]
 
             instance = reseller_form.save(commit=False)
 
@@ -89,10 +92,10 @@ def import_resellers(request):
         "title": "Add Reseller",
         "reseller_form": reseller_form,
         "file_form": file_form,
-        "field_first_row": {'first_name', 'last_name'},
-        "field_names": {'first_name', 'last_name', 'email', 'phone'},
-        "field_location": {'city', 'state', 'zipcode'},
-        "field_geocode": {'latitude', 'longitude'}
+        "field_first_row": {"first_name", "last_name"},
+        "field_names": {"first_name", "last_name", "email", "phone"},
+        "field_location": {"city", "state", "zipcode"},
+        "field_geocode": {"latitude", "longitude"}
     }
 
     if request.method == "POST":
@@ -110,21 +113,78 @@ def import_resellers(request):
             #
             df = import_handler.handle_import_file()
 
-            db = Resellers.objects.all()
+            try:
+                for index, row in df.iterrows():
+                    id = row["id"]
+                    first_name = row["first_name"]
+                    last_name = row["last_name"]
+                    phone = f"+{row['phone']}"
+                    email = row["email"]
+                    company = row["company"]
+                    address = row["address"]
+                    city = row["city"]
+                    state = row["state"]
+                    zipcode = row["zipcode"]
+                    comments = row["comments"]
 
-            # for reseller in db:
-            #     print(reseller.email)
-            #     print(reseller.address)
+                    if row["action"] == "add":
+                        latitude, longitude = get_location(address, city, state, zipcode)
 
-            # for index, row in df.iterrows():
-            #     print(row)
+                        new_reseller = Resellers(
+                            first_name=first_name,
+                            last_name=last_name,
+                            phone=phone,
+                            email=email,
+                            company=company,
+                            address=address,
+                            city=city,
+                            state=state,
+                            zipcode=zipcode,
+                            latitude=latitude,
+                            longitude=longitude,
+                            comments=comments
+                        )
 
-            print(df.columns)
+                        # Save new reseller
+                        new_reseller.save()
+
+                        print("Added new reseller!")
+
+                    elif row["action"] == "delete":
+                        reseller_to_delete = Resellers.objects.get(pk=id)
+
+                        # Delete reseller
+                        reseller_to_delete.delete()
+
+                    elif row["action"] == "update":
+                        reseller_to_update = Resellers.objects.get(pk=id)
+
+                        reseller_to_update.first_name = first_name
+                        reseller_to_update.last_name = last_name
+                        reseller_to_update.phone = phone
+                        reseller_to_update.email = email
+                        reseller_to_update.company = company
+                        reseller_to_update.address = address
+                        reseller_to_update.city = city
+                        reseller_to_update.state = state
+                        reseller_to_update.zipcode = zipcode
+                        reseller_to_update.comments = comments
+
+                        latitude, longitude = get_location(address, city, state, zipcode)
+
+                        reseller_to_update.latitude = latitude
+                        reseller_to_update.longitude = longitude
+
+                        # Update reseller
+                        reseller_to_update.save()
+            except Exception as e:
+                print(e)
+                raise
 
             # Empty folder again
             import_handler.empty_folder()
 
-            messages.success(request, f"Resellers succesfully imported.")
+            messages.success(request, f"Import successful.")
 
     return render(request, "mapapp/add-reseller.html", context)
 
@@ -146,14 +206,14 @@ def export_resellers(self):
 
     file_path = os.path.join(settings.MEDIA_ROOT, f"exports/{export_file}")
 
-    with open(file_path, 'rb') as fh:
+    with open(file_path, "rb") as fh:
         response = HttpResponse(fh.read(), content_type="text/csv")
-        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+        response["Content-Disposition"] = "inline; filename=" + os.path.basename(file_path)
         return response
 
 
 def update_reseller(request, id):
-    reseller = Resellers.objects.get(id=id)
+    reseller = Resellers.objects.get(pk=id)
 
     form = ResellerForm(request.POST or None, instance=reseller)
 
@@ -161,19 +221,19 @@ def update_reseller(request, id):
         "title": "Update Reseller",
         "form": form,
         "reseller": reseller,
-        "field_names": {'first_name', 'last_name', 'email', 'phone'},
-        "field_location": {'city', 'state', 'zipcode'},
-        "field_geocode": {'latitude', 'longitude'}
+        "field_names": {"first_name", "last_name", "email", "phone"},
+        "field_location": {"city", "state", "zipcode"},
+        "field_geocode": {"latitude", "longitude"}
     }
 
     if request.method == "POST":
         if form.is_valid():
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            address = form.cleaned_data['address']
-            city = form.cleaned_data['city']
-            state = form.cleaned_data['state']
-            zipcode = form.cleaned_data['zipcode']
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
+            address = form.cleaned_data["address"]
+            city = form.cleaned_data["city"]
+            state = form.cleaned_data["state"]
+            zipcode = form.cleaned_data["zipcode"]
 
             instance = form.save(commit=False)
 
@@ -199,9 +259,25 @@ def update_reseller(request, id):
     return render(request, "mapapp/update-reseller.html", context)
 
 
-def reseller_data(self):
+def address_location(request):
+    if request.method == "POST":
+        form = AddressForm(request.POST)
 
-    resellers = Resellers.objects.all().order_by('first_name')
+        if form.is_valid():
+            # Here is the problem, not getting address from input
+            address = form.cleaned_data["address"]
+
+            print(address)
+
+            latitude, longitude = get_location_from_search(address)
+
+            print(latitude, longitude)
+
+            return JsonResponse({"latlng": [latitude, longitude]})
+
+
+def reseller_data(self):
+    resellers = Resellers.objects.all().order_by("first_name")
 
     response_data = {
         "resellers": []
@@ -210,18 +286,18 @@ def reseller_data(self):
     for reseller in resellers:
         reseller_data = {}
 
-        reseller_data['first_name'] = reseller.first_name
-        reseller_data['last_name'] = reseller.last_name
-        reseller_data['phone'] = str(reseller.phone)
-        reseller_data['email'] = reseller.email
-        reseller_data['company'] = reseller.company
-        reseller_data['address'] = reseller.address
-        reseller_data['city'] = reseller.city
-        reseller_data['state'] = reseller.state
-        reseller_data['zipcode'] = reseller.zipcode
-        reseller_data['comments'] = reseller.comments
-        reseller_data['latitude'] = reseller.latitude
-        reseller_data['longitude'] = reseller.longitude
+        reseller_data["first_name"] = reseller.first_name
+        reseller_data["last_name"] = reseller.last_name
+        reseller_data["phone"] = str(reseller.phone)
+        reseller_data["email"] = reseller.email
+        reseller_data["company"] = reseller.company
+        reseller_data["address"] = reseller.address
+        reseller_data["city"] = reseller.city
+        reseller_data["state"] = reseller.state
+        reseller_data["zipcode"] = reseller.zipcode
+        reseller_data["comments"] = reseller.comments
+        reseller_data["latitude"] = reseller.latitude
+        reseller_data["longitude"] = reseller.longitude
 
         response_data["resellers"].append(reseller_data)
 

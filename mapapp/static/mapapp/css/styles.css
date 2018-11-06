@@ -10,6 +10,14 @@ html {
     display: flex !important;
 }
 
+.flex-column {
+    flex-direction: column !important;
+}
+
+.mt-auto {
+    margin-top: auto;
+}
+
 .flex-start {
     align-items: flex-start !important;
 }
@@ -34,6 +42,10 @@ html {
     z-index: 1;
 }
 
+.card-content {
+    height: 100%;
+}
+
 .leaflet-top.leaflet-left {
     transform: translateX(250px);
     transition: transform 400ms;
@@ -48,12 +60,11 @@ html {
 }
 
 .nav-search {
-    margin-bottom: 17px;
     background-color: #26a69a;
 }
 
 .reseller-list-container {
-    height: 70vh;
+    margin: 17px 0 17px 0;
     overflow: auto;
 }
 
@@ -98,10 +109,6 @@ html {
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (orientation: landscape) {
-    .reseller-list-container {
-        height: 45vh;
-    }
-
     .messages {
         right: 5%;
     }
@@ -116,23 +123,15 @@ html {
     .leaflet-top.leaflet-left {
         transform: translateX(300px);
     }
-    
-    .reseller-list-container {
-        height: 80vh;
-    }
 }
 
 @media (min-width: 768px) and (orientation: landscape) {
-    .reseller-list-container {
-        height: 45vh;
-    }
+
 }
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-    .reseller-list-container {
-        height: 73vh;
-    }
+
 }
 
 /* Extra large devices (large desktops, 1200px and up) */

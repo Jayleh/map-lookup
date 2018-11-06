@@ -26,3 +26,12 @@ class UploadFileForm(forms.ModelForm):
     class Meta:
         model = UploadFile
         fields = ("file",)
+
+
+class AddressForm(forms.Form):
+    address = forms.CharField(
+        max_length=255,
+        widget=forms.TextInput(attrs={"id": "address-search", "data-js": "address-search",
+                                      "type": "search", "placeholder": "Search Address"}),
+        required=False
+    )

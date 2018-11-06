@@ -16,15 +16,16 @@
 <link rel="stylesheet" href="{% static 'mapapp/css/styles.css' %}">
 {% endblock styles %}
 {% block main %}
-<div class="card side-panel" data-js="side-panel">
-  <div class="card-content">
+<div class="card side-panel d-flex flex-column" data-js="side-panel">
+  <div class="card-content d-flex flex-column">
     <nav class="nav-search">
       <div class="nav-wrapper">
-        <form data-js="form-search">
+        <form data-js="form-address-search" method="POST" action="">
+          {% csrf_token %}
           <div class="input-field">
-            <input id="search" data-js="search" type="search" required>
-            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-            <i class="material-icons">close</i>
+            <!-- <input id="address-search" data-js="address-search" type="search" placeholder="Search Address"> -->
+            {{ address_form.address }}
+            <label class="label-icon" for="address-search"><i class="material-icons">search</i></label>
           </div>
         </form>
       </div>
@@ -60,8 +61,18 @@
         {% endfor %}
       </ul>
     </div>
+    <nav class="nav-search mt-auto">
+      <div class="nav-wrapper">
+        <form data-js="form-filter-search">
+          <div class="input-field">
+            <input id="filter-search" data-js="filter-search" type="search" placeholder="Filter Resellers">
+            <label class="label-icon" for="filtter-search"><i class="material-icons">filter_list</i></label>
+          </div>
+        </form>
+      </div>
+    </nav>
   </div>
-  <div class="card-action center-align">
+  <div class="card-action center-align mt-auto">
     <a href="/add-reseller" class="btn small waves-effect waves-light">Add New Reseller</a>
   </div>
 </div>
