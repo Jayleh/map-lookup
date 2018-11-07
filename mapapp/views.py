@@ -1,4 +1,5 @@
 import os
+import json
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse, Http404
 from django.contrib import messages
@@ -264,14 +265,9 @@ def address_location(request):
         form = AddressForm(request.POST)
 
         if form.is_valid():
-            # Here is the problem, not getting address from input
-            address = form.cleaned_data["address"]
-
-            print(address)
+            address = json.loads(request.body)
 
             latitude, longitude = get_location_from_search(address)
-
-            print(latitude, longitude)
 
             return JsonResponse({"latlng": [latitude, longitude]})
 

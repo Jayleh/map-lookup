@@ -10,17 +10,14 @@ def get_location_from_search(address):
 
     base_url = "https://maps.googleapis.com/maps/api/geocode/json?address"
 
-    # formatted_address = address.replace(" ", "+")
-
-    print(address)
-
     endpoint = f"{base_url}={address}&key={GEOCODE_API_KEY}"
 
     response = requests.get(endpoint).json()
 
-    print(response)
+    # print(response)
 
     try:
+        # formatted_address = response["results"][0]["formatted_address"]
         latitude = response["results"][0]["geometry"]["location"]["lat"]
         longitude = response["results"][0]["geometry"]["location"]["lng"]
 
