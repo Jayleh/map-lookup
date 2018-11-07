@@ -17,18 +17,19 @@ def get_location_from_search(address):
     # print(response)
 
     try:
-        # formatted_address = response["results"][0]["formatted_address"]
         latitude = response["results"][0]["geometry"]["location"]["lat"]
         longitude = response["results"][0]["geometry"]["location"]["lng"]
 
-        return latitude, longitude
+        details = {
+            "formatted_address": response["results"][0]["formatted_address"],
+            "latlng": [latitude, longitude]
+        }
+
+        return details
 
     except Exception as e:
         print(e)
-        latitude = "chicken"
-        longitude = "wings"
-
-        return latitude, longitude
+        raise
 
 
 def get_location(address, city, state, zipcode):

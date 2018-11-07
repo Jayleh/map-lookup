@@ -267,9 +267,9 @@ def address_location(request):
         if form.is_valid():
             address = json.loads(request.body)
 
-            latitude, longitude = get_location_from_search(address)
+            details = get_location_from_search(address)
 
-            return JsonResponse({"latlng": [latitude, longitude]})
+            return JsonResponse({"results": details})
 
 
 def reseller_data(self):

@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Click event on flash message
   flashCloseButton &&
-    flashCloseButton.addEventListener("click", function() {
+    flashCloseButton.addEventListener("click", function () {
       const flashMessage = document.querySelector(".messages");
       flashMessage.parentNode.removeChild(flashMessage);
     });
