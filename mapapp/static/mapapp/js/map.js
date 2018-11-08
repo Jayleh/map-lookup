@@ -53,8 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const mbAttr =
       'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
       '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-      'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>, ' +
-      'Click <a href="/map">here</a> for full map.',
+      'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       mbKey =
         "pk.eyJ1IjoiamF5bGVoIiwiYSI6ImNqaDFhaWo3MzAxNTQycXFtYzVraGJzMmQifQ.JbX9GR_RiSKxSwz9ZK4buw",
       mbUrl = `https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${mbKey}`,

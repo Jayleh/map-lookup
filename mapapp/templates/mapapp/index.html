@@ -77,10 +77,6 @@
   </div>
 </div>
 <div id="map"></div>
-<div class="open-sidenav" data-js="open-sidenav">
-  <a class="btn-floating btn waves-effect waves-light red tooltipped" data-position="left" data-tooltip="Toggle Side Panel"><i
-      class="material-icons">graphic_eq</i></a>
-</div>
 {% if messages %}
 {% for message in messages %}
 <div {% if message.tags %} class="toast messages {{ message.tags }}" {% else %} class="toast messages" {% endif %}>
@@ -89,6 +85,18 @@
 </div>
 {% endfor %}
 {% endif %}
+<div class="open-sidenav fixed-action-btn" data-js="open-sidenav">
+  <a class="btn-floating btn-large blue tooltipped" data-position="left" data-tooltip="Toggle Side Panel">
+    <i class="material-icons">graphic_eq</i>
+  </a>
+  <ul>
+    <li>
+      <a href="/accounts/logout" class="btn-floating tooltipped red" data-position="left" data-tooltip="Logout">
+        <i class="material-icons">gesture</i>
+      </a>
+    </li>
+  </ul>
+</div>
 {% endblock main %}
 {% block scripts %}
 {% load static %}

@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Enable floating action button
+  let $actionBtn = document.querySelectorAll('.fixed-action-btn');
+  M.FloatingActionButton.init($actionBtn);
+
   // Initialize collapsible
   const $collapsible = document.querySelector(".collapsible");
   M.Collapsible.init($collapsible);
