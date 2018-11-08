@@ -29,7 +29,7 @@ def get_location_from_search(address):
 
     except Exception as e:
         print(e)
-        raise
+        return None
 
 
 def get_location(address, city, state, zipcode):

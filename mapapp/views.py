@@ -1,14 +1,17 @@
 import os
 import json
 from django.shortcuts import render, redirect
-from django.http import JsonResponse, HttpResponse, Http404
+from django.contrib.auth import (authenticate, login, logout)
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
 from django.conf import settings
-from .forms import ResellerForm, UploadFileForm, AddressForm
+from .forms import ResellerForm, UploadFileForm, AddressForm, LoginForm
 from .models import Resellers
-from .location import get_location, get_location_from_search, ImportHandler, ExportHandler
+from .location import (get_location, get_location_from_search, ImportHandler, ExportHandler)
 
 
+@login_required
 def home(request):
     resellers = Resellers.objects.all().order_by("first_name")
 
@@ -23,6 +26,7 @@ def home(request):
     return render(request, "mapapp/index.html", context)
 
 
+@login_required
 def add_reseller(request):
     reseller_form = ResellerForm()
     file_form = UploadFileForm()
@@ -40,6 +44,7 @@ def add_reseller(request):
     return render(request, "mapapp/add-reseller.html", context)
 
 
+@login_required
 def add_one_reseller(request):
     reseller_form = ResellerForm(request.POST)
     file_form = UploadFileForm()
@@ -85,6 +90,7 @@ def add_one_reseller(request):
     return render(request, "mapapp/add-reseller.html", context)
 
 
+@login_required
 def import_resellers(request):
     reseller_form = ResellerForm()
     file_form = UploadFileForm(request.POST, request.FILES)
@@ -190,6 +196,7 @@ def import_resellers(request):
     return render(request, "mapapp/add-reseller.html", context)
 
 
+@login_required
 def export_resellers(self):
     dir_name = "./media/exports/"
     db = Resellers.objects.all()
@@ -213,6 +220,7 @@ def export_resellers(self):
         return response
 
 
+@login_required
 def update_reseller(request, id):
     reseller = Resellers.objects.get(pk=id)
 
@@ -260,6 +268,7 @@ def update_reseller(request, id):
     return render(request, "mapapp/update-reseller.html", context)
 
 
+@login_required
 def address_location(request):
     if request.method == "POST":
         form = AddressForm(request.POST)
@@ -272,6 +281,7 @@ def address_location(request):
             return JsonResponse({"results": details})
 
 
+@login_required
 def reseller_data(self):
     resellers = Resellers.objects.all().order_by("first_name")
 
@@ -298,3 +308,33 @@ def reseller_data(self):
         response_data["resellers"].append(reseller_data)
 
     return JsonResponse(response_data)
+
+
+def login_user(request):
+    form = LoginForm(request.POST or None)
+
+    context = {
+        "form": form
+    }
+
+    if form.is_valid():
+        username = form.cleaned_data["username"]
+        password = form.cleaned_data["password"]
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            login(request, user)
+            next_page = request.GET.get("next")
+
+            return redirect(next_page) if next_page else redirect("home")
+
+        else:
+            messages.error(request, f"Login unsuccessful. Please check username and password.")
+
+    return render(request, "mapapp/login.html", context)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect("home")

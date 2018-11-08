@@ -9,5 +9,7 @@ urlpatterns = [
     path("export-resellers", views.export_resellers, name="export_resellers"),
     path("update-reseller/<id>", views.update_reseller, name="update_reseller"),
     path("address-location", views.address_location, name="address_location"),
-    path("reseller-data", views.reseller_data, name="reseller_data")
+    path("reseller-data", views.reseller_data, name="reseller_data"),
+    path("accounts/login/", views.login_user, name="login_user"),
+    path("accounts/logout/", views.logout_user, name="logout_user")
 ]

@@ -37,7 +37,7 @@ html {
     margin: 0 0 0 auto;
 }
 
-.messages:hover {
+.flash-close:hover {
     cursor: pointer;
 }
 

@@ -39,14 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
       clusterMarkers.addLayer(resellerMarker);
     });
 
-    // console.log(resellerMarkers);
-
     // Create marker layer
     const resellerLocations = L.layerGroup(resellerMarkers);
 
-    // console.log(resellerLocations);
-
-    // Send earthquakes layer to createMap function
+    // Send layers to createMap function
     const myMap = await createMap(resellerLocations, clusterMarkers);
 
     return myMap;
@@ -139,40 +135,51 @@ document.addEventListener("DOMContentLoaded", () => {
       addressSearch.addEventListener("submit", async event => {
         event.preventDefault();
 
-        const res = await fetch("/address-location", {
-          method: "POST",
-          credentials: "same-origin",
-          headers: {
-            "X-CSRFToken": getCookie("csrftoken"),
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ address: addressInput.value })
-        });
+        const addressInputValue = addressInput.value.trim();
 
-        const json = await res.json();
-        const addressDetails = json.results;
-        const lat = addressDetails.latlng[0];
-        const lng = addressDetails.latlng[1];
-        const formatted_address = addressDetails.formatted_address;
-
-        myMap.setView(new L.LatLng(lat, lng), 10);
-
-        let redMarker = L.icon({
-          iconUrl: "/static/mapapp/img/red_marker.png",
-          iconSize: [50, 48],
-          iconAnchor: [25, 48],
-          popupAnchor: [0, -38]
-        });
-
-        let searchMarker = new L.marker(addressDetails.latlng, {
-          icon: redMarker
-        }).bindPopup(`${formatted_address}`).addTo(myMap);
-
-        searchMarker &&
-          searchMarker.addEventListener("contextmenu", event => {
-            myMap.removeLayer(searchMarker);
+        if (addressInputValue !== "") {
+          const res = await fetch("/address-location", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+              "X-CSRFToken": getCookie("csrftoken"),
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ address: addressInputValue })
           });
+
+          const json = await res.json();
+          const addressDetails = json.results;
+
+          try {
+            const lat = addressDetails.latlng[0];
+            const lng = addressDetails.latlng[1];
+            const formatted_address = addressDetails.formatted_address;
+
+            myMap.setView(new L.LatLng(lat, lng), 10);
+
+            let redMarker = L.icon({
+              iconUrl: "/static/mapapp/img/red_marker.png",
+              iconSize: [50, 48],
+              iconAnchor: [25, 48],
+              popupAnchor: [0, -38]
+            });
+
+            let searchMarker = new L.marker(addressDetails.latlng, {
+              icon: redMarker
+            }).bindPopup(`${formatted_address}`).addTo(myMap);
+
+            searchMarker &&
+              searchMarker.addEventListener("contextmenu", event => {
+                myMap.removeLayer(searchMarker);
+              });
+          }
+          catch (error) {
+            // console.log(error);
+            M.toast({html: `No results for ${addressInputValue}`});
+          }
+        }
       });
   });
 });
