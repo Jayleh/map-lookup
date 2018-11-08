@@ -26,10 +26,9 @@ html {
     justify-content: space-between !important;
 }
 
-.open-sidenav {
-    position: absolute;
-    right: 4%;
-    bottom: 5%;
+.fixed-action-btn {
+    right: 4% !important;
+    bottom: 5% !important;
 }
 
 .side-panel {
